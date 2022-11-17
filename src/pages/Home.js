@@ -3,14 +3,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
+  const [searchCharacters, setsearchCharacters] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [range, setrange] = useState(100);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3100/characters`);
+        const response = await axios.get(
+          `http://localhost:3100/characters?name=${searchCharacters}&limit=${range}&skip=${
+            currentPage * range - range
+          }`
+        );
 
         setData(response.data);
         setIsLoading(false);
@@ -20,12 +27,12 @@ const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
     };
 
     fetchData();
-  }, [setData, setIsLoading]);
+  }, [setData, setIsLoading, searchCharacters, range, currentPage]);
 
   const pages = [];
   if (!isLoading) {
-    for (let i = 1; i <= Math.ceil(data.count / 50); i++) {
-      pages.push(i);
+    for (let i = 0; i <= Math.ceil(data.count / range); i++) {
+      pages.push(i + 1);
     }
   }
   const clickPage = (page) => {
@@ -36,10 +43,38 @@ const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
     <p>LOADING...</p>
   ) : (
     <main>
-      <section>
+      <section className="wrapper">
         <div>
-          <div className="display-cards wrapper">
-            {data.results.map((chara, index) => {
+          <div className="filter-bar">
+            <Form.Control
+              style={{ color: "white" }}
+              size="lg bg-black"
+              type="search"
+              placeholder="Search..."
+              value={searchCharacters}
+              onChange={(e) => {
+                setsearchCharacters(e.target.value);
+              }}
+            />
+            <div className="inputRange">
+              <label htmlFor="rangeOffer">
+                Nombre de personages à afficher : {range}
+              </label>
+              <input
+                id="rangeOffer"
+                type="range"
+                min="1"
+                max="100"
+                defaultValue={range}
+                onChange={(e) => {
+                  // console.log(e.target);
+                  setrange(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <div className="display-cards">
+            {data.results.sort().map((chara, index) => {
               return <Card key={index} chara={chara} />;
             })}
           </div>

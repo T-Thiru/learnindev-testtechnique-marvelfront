@@ -12,7 +12,7 @@ const Character = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3100/comics/${id}`);
-        console.log(response.data);
+        // console.log(response.data);
         setDataCharacter(response.data);
         setIsLoadingCharacter(false);
       } catch (error) {

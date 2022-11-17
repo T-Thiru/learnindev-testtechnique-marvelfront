@@ -8,6 +8,8 @@ import Favoris from "./pages/Favoris";
 import { useState } from "react";
 import Character from "./pages/Character";
 import Comic from "./pages/Comic";
+import LogIn from "./pages/LogIn";
+import SignUp from "./pages/SignUp";
 function App() {
   const [data, setData] = useState();
   const [dataComics, setDataComics] = useState();
@@ -43,6 +45,8 @@ function App() {
         <Route path="/favoris" element={<Favoris />} />
         <Route path="/comics/:id" element={<Character />} />
         <Route path="/comic/:id" element={<Comic />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="signup" element={<SignUp />} />
       </Routes>
       <footer>
         <p>Made at le Reacteur by Thiru - 2022</p>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CardComics from "../components/CardComics";
+import Form from "react-bootstrap/Form";
 
 const Comics = ({ setDataComics, dataComics }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,10 +38,19 @@ const Comics = ({ setDataComics, dataComics }) => {
     <p>LOADING...</p>
   ) : (
     <main>
-      <section>
+      <section className="wrapper">
         <div>
-          <div className="display-cards wrapper">
-            {dataComics.results.map((comic, index) => {
+          <div className="filter-bar">
+            <Form.Control
+              style={{ color: "white" }}
+              size="lg bg-black"
+              type="search"
+              placeholder="Search..."
+            />
+          </div>
+
+          <div className="display-cards">
+            {dataComics.results.sort().map((comic, index) => {
               return <CardComics key={index} comic={comic} />;
             })}
           </div>
