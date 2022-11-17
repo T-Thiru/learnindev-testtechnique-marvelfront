@@ -6,13 +6,19 @@ import CardComics from "../components/CardComics";
 import Form from "react-bootstrap/Form";
 
 const Comics = ({ setDataComics, dataComics }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingComics, setIsLoadingComics] = useState(true);
+  const [currentPage, setCurrentPage] = useState(100);
+  const [searchComics, setsearchComics] = useState("");
+  const [range, setrange] = useState(100);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3100/comics`);
+        const response = await axios.get(
+          `http://localhost:3100/comics?title=${searchComics}&limit=${range}&skip=${
+            currentPage * range - range
+          }`
+        );
 
         setDataComics(response.data);
         setIsLoadingComics(false);
@@ -22,12 +28,12 @@ const Comics = ({ setDataComics, dataComics }) => {
     };
 
     fetchData();
-  }, [setDataComics, setIsLoadingComics]);
+  }, [setDataComics, setIsLoadingComics, searchComics, range, currentPage]);
 
   const pages = [];
   if (!isLoadingComics) {
-    for (let i = 1; i <= Math.ceil(dataComics.count / 50); i++) {
-      pages.push(i);
+    for (let i = 0; i <= Math.ceil(dataComics.count / range); i++) {
+      pages.push(i + 1);
     }
   }
   const clickPage = (page) => {
@@ -45,10 +51,27 @@ const Comics = ({ setDataComics, dataComics }) => {
               style={{ color: "white" }}
               size="lg bg-black"
               type="search"
+              value={searchComics}
               placeholder="Search..."
+              onChange={(e) => {
+                setsearchComics(e.target.value);
+              }}
             />
           </div>
-
+          <div className="inputRange">
+            <label htmlFor="range">Nombre de comics à afficher : {range}</label>
+            <input
+              id="range"
+              type="range"
+              min="1"
+              max="100"
+              defaultValue={range}
+              onChange={(e) => {
+                // console.log(e.target);
+                setrange(e.target.value);
+              }}
+            />
+          </div>
           <div className="display-cards">
             {dataComics.results.sort().map((comic, index) => {
               return <CardComics key={index} comic={comic} />;
@@ -60,8 +83,21 @@ const Comics = ({ setDataComics, dataComics }) => {
         <div className="pagination wrapper">
           {pages.map((page, index) => {
             return (
-              <Link key={index} style={{ color: "red" }}>
+              <Link
+                key={index}
+                style={{
+                  textDecoration: "none",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "red",
+                  borderRadius: "50%",
+                }}
+              >
                 <span
+                  style={{
+                    color: "white",
+                    backgroundColor: "red",
+                  }}
                   onClick={() => {
                     clickPage(page);
                   }}

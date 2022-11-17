@@ -23,6 +23,14 @@ header {
 .filter-bar {
   margin: 15px 0;
 }
+
+.avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
 footer {
   display: flex;
   justify-content: center;
@@ -50,7 +58,15 @@ footer {
   height: 460px;
   margin: 15px 5px;
   padding: 5px;
+  transition: 0.2s ease;
+  border-bottom: 1px solid red;
 }
+
+.card-container:hover {
+  opacity: 0.5;
+  scale: 1.1;
+}
+
 .chara-pic {
   width: 100%;
   height: 300px;
@@ -70,6 +86,8 @@ footer {
 .pagination {
   gap: 20px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .main-container {
@@ -83,10 +101,11 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-bottom: 1px solid red;
 }
 
 .character-pic {
-  width: 400px;
+  max-width: 400px;
   margin: 20px 0;
 }
 
@@ -99,12 +118,18 @@ footer {
   flex-shrink: 0; */
 }
 
+.comic-pic:hover {
+  opacity: 0.5;
+  scale: 1.1;
+}
+
 .carrousel {
   display: flex;
   overflow-y: scroll;
   flex-wrap: nowrap;
   flex: 1;
   flex-shrink: 0;
+  gap: 5px;
 }
 
 .separation {
@@ -113,5 +138,38 @@ footer {
 
 .container-form {
   width: 50vw;
-  margin: 10% auto;
+  margin: 5% auto;
+}
+
+#range {
+  margin: 0 20px;
+}
+
+.favoris-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 50px 0;
+}
+
+.container-favoris {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.photo-favoris {
+  height: 300px;
+  border-bottom: 1px solid red;
+}
+.photo-favoris:hover {
+  opacity: 0.5;
+  scale: 1.1;
 }

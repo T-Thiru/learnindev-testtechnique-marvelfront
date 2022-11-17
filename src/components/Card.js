@@ -17,7 +17,7 @@ const Card = ({ chara }) => {
           />
           <div className="chara-detail">
             <span>
-              <h2>{chara.name}</h2>
+              <h4>{chara.name}</h4>
             </span>
           </div>
         </div>

@@ -17,7 +17,7 @@ const CardComics = ({ comic }) => {
           />
           <div className="chara-detail">
             <span>
-              <h2>{comic.title}</h2>
+              <h4>{comic.title}</h4>
             </span>
           </div>
         </div>

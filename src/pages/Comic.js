@@ -1,11 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Cookies from "js-cookie";
 
-const Comic = () => {
+const Comic = ({ token }) => {
+  const navigate = useNavigate();
   const [dataComic, setDataComic] = useState();
   const [isLoadingComic, setIsLoadingComic] = useState(true);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -23,6 +27,24 @@ const Comic = () => {
     fetchData();
   }, [setDataComic, setIsLoadingComic, id]);
 
+  const handleFavorisComic = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3100/comic/favoris/`,
+        { id: id, comic: dataComic },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log(response);
+      navigate("/favoris", { state: { userFavoris: response.data } });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return isLoadingComic ? (
     <p>LOADING...</p>
   ) : (
@@ -34,7 +56,19 @@ const Comic = () => {
           src={`${dataComic.thumbnail.path}.${dataComic.thumbnail.extension}`}
           alt=""
         />
-        <p>{dataComic.description}</p>
+        <p className="wrapper">{dataComic.description}</p>
+        {Cookies.get("token") ? (
+          <Button
+            variant="secondary w-100 m-2"
+            style={{ color: "white" }}
+            type="submit"
+            onClick={handleFavorisComic}
+          >
+            Ajouter à mes favoris
+          </Button>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

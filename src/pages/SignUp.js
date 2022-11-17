@@ -7,7 +7,13 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const SignUp = ({
+  token,
+  setToken,
+  setConectedUser,
+  setavatarUser,
+  avatarUser,
+}) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,42 +22,45 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    //     try {
-    //       e.preventDefault();
-    //       const formData = new FormData();
-    //       formData.append("email", email);
-    //       formData.append("username", username);
-    //       formData.append("password", password);
-    //       if (profilPic) {
-    //         formData.append("picture", profilPic);
-    //       }
-    //       const resToken = await axios.post(
-    //         "https://vinted--difficult-club--56xblq4s6sr6.code.run/user/signup",
-    //         formData,
-    //         {
-    //           headers: {
-    //             "Content-Type": "multipart/form-data",
-    //           },
-    //         }
-    //       );
-    //       // console.log(resToken.data);
-    //       if (resToken.data.token) {
-    //         setToken(resToken.data.token);
-    //         setConectedUser(resToken.data.id);
-    //         setavatarUser(resToken.data.account?.avatar?.secure_url);
-    //         Cookies.set("token", token, { expires: 7 });
-    //         navigate("/");
-    //         setErrorSignIn("");
-    //       }
-    //     } catch (error) {
-    //       console.log(error.message);
-    //       console.log(error.response.status);
-    //       console.log(error.response.data);
-    //       if (error.response.status === 400)
-    //         setErrorSignIn("Veuillez remplire tous les champs");
-    //       if (error.response.status === 409)
-    //         setErrorSignIn("Cet adresse mail existe déjà");
-    //     }
+    try {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("username", username);
+      formData.append("password", password);
+      if (profilPic) {
+        formData.append("picture", profilPic);
+      }
+      const resToken = await axios.post(
+        "http://localhost:3100/signup",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // console.log(resToken.data);
+      if (resToken.data.token) {
+        setToken(resToken.data.token);
+        setConectedUser(resToken.data.id);
+        setavatarUser(resToken.data.account?.avatar?.secure_url);
+        Cookies.set("token", token, { expires: 2 });
+        Cookies.set("avatar", avatarUser, {
+          expires: 2,
+        });
+        navigate("/");
+        setErrorSignIn("");
+      }
+    } catch (error) {
+      console.log(error.message);
+      console.log(error.response.status);
+      console.log(error.response.data);
+      if (error.response.status === 400)
+        setErrorSignIn("Veuillez remplire tous les champs");
+      if (error.response.status === 409)
+        setErrorSignIn("Cet adresse mail existe déjà");
+    }
   };
 
   return (

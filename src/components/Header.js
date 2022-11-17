@@ -1,10 +1,11 @@
 import React from "react";
 import logo from "../assets/Logo.svg";
 import Button from "react-bootstrap/Button";
+import Cookies from "js-cookie";
 
 import { Link } from "react-router-dom";
 
-const Header = ({ searchValue, setSearchValue }) => {
+const Header = ({ avatarUser, setToken, setavatarUser, setConectedUser }) => {
   return (
     <div className="header wrapper">
       <div className="auth">
@@ -14,12 +15,37 @@ const Header = ({ searchValue, setSearchValue }) => {
           </Link>
         </div>
         <div>
+          {avatarUser || Cookies.get("avatar") ? (
+            <img
+              className="avatar"
+              src={Cookies.get("avatar") || avatarUser}
+              alt="avatar"
+            />
+          ) : (
+            ""
+          )}
+
           <Link to="/login">
             <Button variant="outline-secondary m-2">LogIn</Button>
           </Link>
-          <Link to="/signup">
-            <Button variant="outline-secondary">SignUp</Button>
-          </Link>
+          {Cookies.get("token") ? (
+            <Button
+              variant="danger"
+              onClick={() => {
+                Cookies.remove("token");
+                Cookies.remove("avatar");
+                setToken(null);
+                setConectedUser(null);
+                setavatarUser("");
+              }}
+            >
+              LogOut
+            </Button>
+          ) : (
+            <Link to="/signup">
+              <Button variant="outline-secondary">SignUp</Button>
+            </Link>
+          )}
         </div>
       </div>
 

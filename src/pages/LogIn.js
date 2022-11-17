@@ -7,41 +7,50 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const LogIn = () => {
+const LogIn = ({
+  token,
+  setToken,
+  setConectedUser,
+  setavatarUser,
+  avatarUser,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorLogIn, setErrorLogIn] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    // try {
-    //   e.preventDefault();
-    //   const logIndetail = {
-    //     email: email,
-    //     password: password,
-    //   };
-    //   const resToken = await axios.post(
-    //     "https://vinted--difficult-club--56xblq4s6sr6.code.run/user/login",
-    //     logIndetail
-    //   );
-    //   // console.log(resToken.data);
-    //   if (resToken.data.token) {
-    //     setToken(resToken.data.token);
-    //     setConectedUser(resToken.data.id);
-    //     setavatarUser(resToken.data.account?.avatar?.secure_url);
-    //     Cookies.set("token", token, { expires: 7 });
-    //     navigate("/");
-    //     setErrorLogIn("");
-    //   }
-    // } catch (error) {
-    //   console.log(error.message);
-    //   console.log(error.response.data);
-    //   if (error.response.status === 401)
-    //     setErrorLogIn("identifiant ou Mot de passe incorrect");
-    //   console.log(error.response.data);
-    //   if (error.response.status === 400)
-    //     setErrorLogIn("Ce compte n'existe pas");
-    // }
+    try {
+      e.preventDefault();
+      const logIndetail = {
+        email: email,
+        password: password,
+      };
+      const resToken = await axios.post(
+        "http://localhost:3100/login",
+        logIndetail
+      );
+      // console.log(resToken.data);
+      if (resToken.data.token) {
+        setToken(resToken.data.token);
+        setConectedUser(resToken.data.id);
+        setavatarUser(resToken.data.account?.avatar?.secure_url);
+        Cookies.set("token", token, { expires: 2 });
+        Cookies.set("avatar", avatarUser, {
+          expires: 2,
+        });
+        navigate("/");
+        setErrorLogIn("");
+      }
+    } catch (error) {
+      console.log(error.message);
+      console.log(error.response.data);
+      if (error.response.status === 401)
+        setErrorLogIn("identifiant ou Mot de passe incorrect");
+      console.log(error.response.data);
+      if (error.response.status === 400)
+        setErrorLogIn("Ce compte n'existe pas");
+    }
   };
 
   return (

@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 
-const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
+const Home = ({ setIsLoading, isLoading, setData, data }) => {
   const [searchCharacters, setsearchCharacters] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [range, setrange] = useState(100);
@@ -56,22 +56,22 @@ const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
                 setsearchCharacters(e.target.value);
               }}
             />
-            <div className="inputRange">
-              <label htmlFor="rangeOffer">
-                Nombre de personages à afficher : {range}
-              </label>
-              <input
-                id="rangeOffer"
-                type="range"
-                min="1"
-                max="100"
-                defaultValue={range}
-                onChange={(e) => {
-                  // console.log(e.target);
-                  setrange(e.target.value);
-                }}
-              />
-            </div>
+          </div>
+          <div className="inputRange">
+            <label htmlFor="range">
+              Nombre de personages à afficher : {range}
+            </label>
+            <input
+              id="range"
+              type="range"
+              min="1"
+              max="100"
+              defaultValue={range}
+              onChange={(e) => {
+                // console.log(e.target);
+                setrange(e.target.value);
+              }}
+            />
           </div>
           <div className="display-cards">
             {data.results.sort().map((chara, index) => {
@@ -84,8 +84,23 @@ const Home = ({ setIsLoading, isLoading, searchValue, setData, data }) => {
         <div className="pagination wrapper">
           {pages.map((page, index) => {
             return (
-              <Link key={index} style={{ color: "red" }}>
+              <Link
+                key={index}
+                style={{
+                  textDecoration: "none",
+                  width: "30px",
+                  height: "30px",
+                  backgroundColor: "red",
+                  borderRadius: "50%",
+                }}
+              >
                 <span
+                  style={{
+                    color: "white",
+                    backgroundColor: "red",
+                    textDecoration: "none",
+                    textAlign: "center",
+                  }}
                   onClick={() => {
                     clickPage(page);
                   }}

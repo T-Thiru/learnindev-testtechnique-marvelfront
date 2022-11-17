@@ -1,9 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Cookies from "js-cookie";
 
-const Character = () => {
+const Character = ({ token }) => {
+  const navigate = useNavigate();
   const [dataCharacter, setDataCharacter] = useState();
   const [isLoadingCharacter, setIsLoadingCharacter] = useState(true);
   const { id } = useParams();
@@ -23,6 +26,24 @@ const Character = () => {
     fetchData();
   }, [setDataCharacter, setIsLoadingCharacter, id]);
 
+  const handleFavorisCharacter = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3100/character/favoris/`,
+        { id: id, character: dataCharacter },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log(response.data);
+      navigate("/favoris", { state: { userFavoris: response.data } });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return isLoadingCharacter ? (
     <p>LOADING...</p>
   ) : (
@@ -35,17 +56,31 @@ const Character = () => {
           alt={dataCharacter.name}
         />
         <p>{dataCharacter.description}</p>
+        {Cookies.get("token") ? (
+          <Button
+            variant="secondary w-100 m-2"
+            style={{ color: "white" }}
+            type="submit"
+            onClick={handleFavorisCharacter}
+          >
+            Ajouter à mes favoris
+          </Button>
+        ) : (
+          ""
+        )}
       </div>
       <h2 className="wrapper separation">Listes des Comics du Personnage</h2>
+
       <div className="carrousel wrapper">
         {dataCharacter.comics.map((comic, i) => {
           return (
-            <img
-              key={i}
-              className="comic-pic"
-              src={`${comic.thumbnail?.path}.${comic.thumbnail?.extension}`}
-              alt={comic.title}
-            />
+            <Link key={i} to={`/comic/${comic._id}`}>
+              <img
+                className="comic-pic"
+                src={`${comic.thumbnail?.path}.${comic.thumbnail?.extension}`}
+                alt={comic.title}
+              />
+            </Link>
           );
         })}
       </div>

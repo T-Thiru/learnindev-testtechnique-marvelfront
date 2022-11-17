@@ -1,6 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Cookies from "js-cookie";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Comics from "./pages/Comics";
@@ -14,14 +15,19 @@ function App() {
   const [data, setData] = useState();
   const [dataComics, setDataComics] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  // const [token, setToken] = useState(Cookies.get("token") || null);
-
-  const [searchValue, setSearchValue] = useState("");
+  const [token, setToken] = useState(Cookies.get("token") || null);
+  const [connectedUser, setConectedUser] = useState();
+  const [avatarUser, setavatarUser] = useState();
 
   return (
     <Router>
       <header>
-        <Header setSearchValue={setSearchValue} />
+        <Header
+          setToken={setToken}
+          setavatarUser={setavatarUser}
+          setConectedUser={setConectedUser}
+          avatarUser={avatarUser}
+        />
       </header>
       <Routes>
         <Route
@@ -32,7 +38,6 @@ function App() {
               data={data}
               setIsLoading={setIsLoading}
               isLoading={isLoading}
-              searchValue={searchValue}
             />
           }
         />
@@ -42,11 +47,48 @@ function App() {
             <Comics setDataComics={setDataComics} dataComics={dataComics} />
           }
         />
-        <Route path="/favoris" element={<Favoris />} />
-        <Route path="/comics/:id" element={<Character />} />
-        <Route path="/comic/:id" element={<Comic />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route
+          path="/favoris"
+          element={
+            Cookies.get("token") ? (
+              <Favoris connectedUser={connectedUser} token={token} />
+            ) : (
+              <SignUp
+                token={token}
+                setToken={setToken}
+                setConectedUser={setConectedUser}
+                setavatarUser={setavatarUser}
+                connectedUser={connectedUser}
+              />
+            )
+          }
+        />
+        <Route path="/comics/:id" element={<Character token={token} />} />
+        <Route path="/comic/:id" element={<Comic token={token} />} />
+        <Route
+          path="/login"
+          element={
+            <LogIn
+              token={token}
+              setToken={setToken}
+              setConectedUser={setConectedUser}
+              setavatarUser={setavatarUser}
+              avatarUser={avatarUser}
+            />
+          }
+        />
+        <Route
+          path="signup"
+          element={
+            <SignUp
+              token={token}
+              setToken={setToken}
+              setConectedUser={setConectedUser}
+              setavatarUser={setavatarUser}
+              avatarUser={avatarUser}
+            />
+          }
+        />
       </Routes>
       <footer>
         <p>Made at le Reacteur by Thiru - 2022</p>
