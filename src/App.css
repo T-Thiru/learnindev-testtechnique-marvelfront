@@ -30,6 +30,7 @@ header {
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
+  margin: 0 10px;
 }
 footer {
   display: flex;

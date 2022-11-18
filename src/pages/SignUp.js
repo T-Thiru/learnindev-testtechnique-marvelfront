@@ -46,7 +46,7 @@ const SignUp = ({
         setConectedUser(resToken.data.id);
         setavatarUser(resToken.data.account?.avatar?.secure_url);
         Cookies.set("token", token, { expires: 2 });
-        Cookies.set("avatar", avatarUser, {
+        Cookies.set("avatar", resToken.data.account?.avatar?.secure_url, {
           expires: 2,
         });
         navigate("/");

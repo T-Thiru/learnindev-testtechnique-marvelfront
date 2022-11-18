@@ -57,6 +57,32 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
               }}
             />
           </div>
+          <div>
+            {data.results
+              .filter((sujestedName) => {
+                return (
+                  searchCharacters &&
+                  sujestedName.name
+                    .toLowerCase()
+                    .startsWith(searchCharacters.toLowerCase(0, 10)) &&
+                  sujestedName.name.toLowerCase() !==
+                    searchCharacters.toLocaleLowerCase()
+                );
+              })
+              .slice(0, 10)
+              .map((sujestedName, s) => {
+                return (
+                  <div
+                    key={s}
+                    onClick={() => {
+                      setsearchCharacters(sujestedName.name);
+                    }}
+                  >
+                    {sujestedName.name}
+                  </div>
+                );
+              })}
+          </div>
           <div className="inputRange">
             <label htmlFor="range">
               Nombre de personages à afficher : {range}

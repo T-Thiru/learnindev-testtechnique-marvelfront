@@ -5,7 +5,13 @@ import Cookies from "js-cookie";
 
 import { Link } from "react-router-dom";
 
-const Header = ({ avatarUser, setToken, setavatarUser, setConectedUser }) => {
+const Header = ({
+  avatarUser,
+  setToken,
+  setavatarUser,
+  setConectedUser,
+  connectedUser,
+}) => {
   return (
     <div className="header wrapper">
       <div className="auth">
@@ -25,9 +31,14 @@ const Header = ({ avatarUser, setToken, setavatarUser, setConectedUser }) => {
             ""
           )}
 
-          <Link to="/login">
-            <Button variant="outline-secondary m-2">LogIn</Button>
-          </Link>
+          {!connectedUser ? (
+            <Link to="/login">
+              <Button variant="outline-secondary m-2">LogIn</Button>
+            </Link>
+          ) : (
+            ""
+          )}
+
           {Cookies.get("token") ? (
             <Button
               variant="danger"

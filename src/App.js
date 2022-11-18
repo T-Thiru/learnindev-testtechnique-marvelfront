@@ -26,6 +26,7 @@ function App() {
           setToken={setToken}
           setavatarUser={setavatarUser}
           setConectedUser={setConectedUser}
+          connectedUser={connectedUser}
           avatarUser={avatarUser}
         />
       </header>
