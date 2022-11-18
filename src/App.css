@@ -61,6 +61,7 @@ footer {
   padding: 5px;
   transition: 0.2s ease;
   border-bottom: 1px solid red;
+  overflow: auto;
 }
 
 .card-container:hover {
@@ -111,7 +112,7 @@ footer {
 }
 
 .comic-pic {
-  width: 20vw;
+  max-width: 10vw;
 
   object-fit: cover;
   object-position: center;

@@ -63,8 +63,9 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
                 return (
                   searchCharacters &&
                   sujestedName.name
+                    .replace()
                     .toLowerCase()
-                    .startsWith(searchCharacters.toLowerCase(0, 10)) &&
+                    .startsWith(searchCharacters.toLowerCase()) &&
                   sujestedName.name.toLowerCase() !==
                     searchCharacters.toLocaleLowerCase()
                 );

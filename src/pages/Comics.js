@@ -1,13 +1,14 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CardComics from "../components/CardComics";
 import Form from "react-bootstrap/Form";
 
 const Comics = ({ setDataComics, dataComics }) => {
+  const navigate = useNavigate();
   const [isLoadingComics, setIsLoadingComics] = useState(true);
-  const [currentPage, setCurrentPage] = useState(100);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchComics, setsearchComics] = useState("");
   const [range, setrange] = useState(100);
 
@@ -45,7 +46,7 @@ const Comics = ({ setDataComics, dataComics }) => {
   ) : (
     <main>
       <section className="wrapper">
-        <div>
+        <div id="topPage">
           <div className="filter-bar">
             <Form.Control
               style={{ color: "white" }}
@@ -57,6 +58,32 @@ const Comics = ({ setDataComics, dataComics }) => {
                 setsearchComics(e.target.value);
               }}
             />
+          </div>
+          <div>
+            {dataComics.results
+              .filter((sujestedTitle) => {
+                return (
+                  searchComics &&
+                  sujestedTitle.title
+                    .toLowerCase()
+                    .startsWith(searchComics.toLowerCase()) &&
+                  sujestedTitle.title.toLowerCase() !==
+                    searchComics.toLocaleLowerCase()
+                );
+              })
+              .slice(0, 10)
+              .map((sujestedTitle, s) => {
+                return (
+                  <div
+                    key={s}
+                    onClick={() => {
+                      setsearchComics(sujestedTitle.title);
+                    }}
+                  >
+                    {sujestedTitle.title}
+                  </div>
+                );
+              })}
           </div>
           <div className="inputRange">
             <label htmlFor="range">Nombre de comics à afficher : {range}</label>
@@ -83,29 +110,23 @@ const Comics = ({ setDataComics, dataComics }) => {
         <div className="pagination wrapper">
           {pages.map((page, index) => {
             return (
-              <Link
+              <span
                 key={index}
                 style={{
-                  textDecoration: "none",
-                  width: "30px",
-                  height: "30px",
+                  paddingTop: "5px",
+                  color: "white",
                   backgroundColor: "red",
+                  width: "40px",
+                  height: "40px",
                   borderRadius: "50%",
                 }}
+                onClick={() => {
+                  clickPage(page);
+                }}
+                value={page}
               >
-                <span
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                  }}
-                  onClick={() => {
-                    clickPage(page);
-                  }}
-                  value={page}
-                >
-                  {page}
-                </span>
-              </Link>
+                {page}
+              </span>
             );
           })}
           <span style={{ color: "red" }}>Pages</span>
