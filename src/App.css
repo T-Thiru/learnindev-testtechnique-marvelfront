@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  background-color: rgb(0, 0, 0);
+  background-color: black;
   color: white;
 }
 
@@ -21,7 +21,7 @@ header {
 }
 
 .filter-bar {
-  margin: 15px 0;
+  padding: 20px 0;
 }
 
 .avatar {
@@ -85,12 +85,12 @@ footer {
 .noUnderline {
   text-decoration: none;
 }
-.pagination {
+/* .pagination {
   gap: 20px;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
-}
+} */
 
 .main-container {
   padding: 30px 0;
@@ -174,4 +174,8 @@ footer {
 .photo-favoris:hover {
   opacity: 0.5;
   scale: 1.1;
+}
+
+.pagina {
+  background-color: white !important ;
 }

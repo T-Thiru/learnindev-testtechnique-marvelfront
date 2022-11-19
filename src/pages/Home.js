@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
+import TablePagination from "@mui/material/TablePagination";
 
 const Home = ({ setIsLoading, isLoading, setData, data }) => {
   const [searchCharacters, setsearchCharacters] = useState("");
@@ -39,6 +40,15 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
     setCurrentPage(page);
   };
 
+  const handleChangePage = (event) => {
+    setCurrentPage(event.target.value);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setrange(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
   return isLoading ? (
     <p>LOADING...</p>
   ) : (
@@ -65,7 +75,7 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
                   sujestedName.name
                     .replace()
                     .toLowerCase()
-                    .startsWith(searchCharacters.toLowerCase()) &&
+                    .includes(searchCharacters.toLowerCase()) &&
                   sujestedName.name.toLowerCase() !==
                     searchCharacters.toLocaleLowerCase()
                 );
@@ -98,6 +108,16 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
                 // console.log(e.target);
                 setrange(e.target.value);
               }}
+            />
+          </div>
+          <div>
+            <TablePagination
+              component="div"
+              count={data.count}
+              page={100}
+              onPageChange={handleChangePage}
+              rowsPerPage={100}
+              onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </div>
           <div className="display-cards">

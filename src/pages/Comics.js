@@ -66,7 +66,7 @@ const Comics = ({ setDataComics, dataComics }) => {
                   searchComics &&
                   sujestedTitle.title
                     .toLowerCase()
-                    .startsWith(searchComics.toLowerCase()) &&
+                    .includes(searchComics.toLowerCase()) &&
                   sujestedTitle.title.toLowerCase() !==
                     searchComics.toLocaleLowerCase()
                 );
@@ -99,6 +99,7 @@ const Comics = ({ setDataComics, dataComics }) => {
               }}
             />
           </div>
+          <div></div>
           <div className="display-cards">
             {dataComics.results.sort().map((comic, index) => {
               return <CardComics key={index} comic={comic} />;
