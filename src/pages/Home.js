@@ -2,20 +2,22 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
+
 import Form from "react-bootstrap/Form";
-import TablePagination from "@mui/material/TablePagination";
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 const Home = ({ setIsLoading, isLoading, setData, data }) => {
   const [searchCharacters, setsearchCharacters] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [range, setrange] = useState(100);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3100/characters?name=${searchCharacters}&limit=${range}&skip=${
+          `https://site--marvelback--56xblq4s6sr6.code.run/characters?name=${searchCharacters}&limit=${range}&skip=${
             currentPage * range - range
           }`
         );
@@ -36,18 +38,6 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
       pages.push(i + 1);
     }
   }
-  const clickPage = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleChangePage = (event) => {
-    setCurrentPage(event.target.value);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setrange(parseInt(event.target.value, 10));
-    setCurrentPage(0);
-  };
 
   return isLoading ? (
     <p>LOADING...</p>
@@ -64,10 +54,11 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
               value={searchCharacters}
               onChange={(e) => {
                 setsearchCharacters(e.target.value);
+                setVisible(false);
               }}
             />
           </div>
-          <div>
+          <div style={{ display: visible ? "none" : "" }}>
             {data.results
               .filter((sujestedName) => {
                 return (
@@ -87,6 +78,7 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
                     key={s}
                     onClick={() => {
                       setsearchCharacters(sujestedName.name);
+                      setVisible(true);
                     }}
                   >
                     {sujestedName.name}
@@ -95,70 +87,92 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
               })}
           </div>
           <div className="inputRange">
-            <label htmlFor="range">
-              Nombre de personages à afficher : {range}
-            </label>
-            <input
-              id="range"
-              type="range"
-              min="1"
-              max="100"
-              defaultValue={range}
+            <Form.Select
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                width: "250px",
+              }}
               onChange={(e) => {
                 // console.log(e.target);
                 setrange(e.target.value);
               }}
-            />
+            >
+              <option>Nombre d'affichage</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="75">75</option>
+              <option value="100">100</option>
+            </Form.Select>
           </div>
-          <div>
-            <TablePagination
-              component="div"
-              count={data.count}
-              page={100}
-              onPageChange={handleChangePage}
-              rowsPerPage={100}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+          <div className="pagination">
+            <ButtonGroup aria-label="Basic example">
+              <Button
+                variant="secondary"
+                disabled={currentPage === 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(1);
+                }}
+              >
+                Premiere page
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage <= 10 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage - 10);
+                }}
+              >
+                -10
+              </Button>
+
+              <Button
+                variant="secondary"
+                disabled={currentPage === 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage - 1);
+                }}
+              >
+                precedent
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage === pages.length - 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                suivant
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage > pages.length - 11 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage + 10);
+                }}
+              >
+                +10
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage === pages.length - 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(pages.length - 1);
+                }}
+              >
+                Derniere page
+              </Button>
+            </ButtonGroup>
           </div>
+          <h6>
+            Page :{currentPage} sur {pages.length - 1}
+          </h6>
           <div className="display-cards">
             {data.results.sort().map((chara, index) => {
               return <Card key={index} chara={chara} />;
             })}
           </div>
-        </div>
-      </section>
-      <section>
-        <div className="pagination wrapper">
-          {pages.map((page, index) => {
-            return (
-              <Link
-                key={index}
-                style={{
-                  textDecoration: "none",
-                  width: "30px",
-                  height: "30px",
-                  backgroundColor: "red",
-                  borderRadius: "50%",
-                }}
-              >
-                <span
-                  style={{
-                    color: "white",
-                    backgroundColor: "red",
-                    textDecoration: "none",
-                    textAlign: "center",
-                  }}
-                  onClick={() => {
-                    clickPage(page);
-                  }}
-                  value={page}
-                >
-                  {page}
-                </span>
-              </Link>
-            );
-          })}
-          <span style={{ color: "red" }}>Pages</span>
         </div>
       </section>
     </main>

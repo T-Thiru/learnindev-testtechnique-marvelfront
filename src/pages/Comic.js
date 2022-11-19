@@ -30,7 +30,7 @@ const Comic = ({ token }) => {
   const handleFavorisComic = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3100/comic/favoris/`,
+        `https://site--marvelback--56xblq4s6sr6.code.run/comic/favoris/`,
         { id: id, comic: dataComic },
         {
           headers: {

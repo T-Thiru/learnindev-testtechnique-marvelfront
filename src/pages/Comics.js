@@ -1,22 +1,23 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import CardComics from "../components/CardComics";
 import Form from "react-bootstrap/Form";
 
 const Comics = ({ setDataComics, dataComics }) => {
-  const navigate = useNavigate();
   const [isLoadingComics, setIsLoadingComics] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchComics, setsearchComics] = useState("");
   const [range, setrange] = useState(100);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3100/comics?title=${searchComics}&limit=${range}&skip=${
+          `https://site--marvelback--56xblq4s6sr6.code.run/comics?title=${searchComics}&limit=${range}&skip=${
             currentPage * range - range
           }`
         );
@@ -37,9 +38,6 @@ const Comics = ({ setDataComics, dataComics }) => {
       pages.push(i + 1);
     }
   }
-  const clickPage = (page) => {
-    setCurrentPage(page);
-  };
 
   return isLoadingComics ? (
     <p>LOADING...</p>
@@ -56,10 +54,11 @@ const Comics = ({ setDataComics, dataComics }) => {
               placeholder="Search..."
               onChange={(e) => {
                 setsearchComics(e.target.value);
+                setVisible(false);
               }}
             />
           </div>
-          <div>
+          <div style={{ display: visible ? "none" : "" }}>
             {dataComics.results
               .filter((sujestedTitle) => {
                 return (
@@ -78,6 +77,7 @@ const Comics = ({ setDataComics, dataComics }) => {
                     key={s}
                     onClick={() => {
                       setsearchComics(sujestedTitle.title);
+                      setVisible(true);
                     }}
                   >
                     {sujestedTitle.title}
@@ -86,51 +86,93 @@ const Comics = ({ setDataComics, dataComics }) => {
               })}
           </div>
           <div className="inputRange">
-            <label htmlFor="range">Nombre de comics à afficher : {range}</label>
-            <input
-              id="range"
-              type="range"
-              min="1"
-              max="100"
-              defaultValue={range}
+            <Form.Select
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                width: "250px",
+              }}
               onChange={(e) => {
                 // console.log(e.target);
                 setrange(e.target.value);
               }}
-            />
+            >
+              <option>Nombre d'affichage</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="75">75</option>
+              <option value="100">100</option>
+            </Form.Select>
           </div>
-          <div></div>
+          <div className="pagination">
+            <ButtonGroup>
+              <Button
+                variant="secondary"
+                disabled={currentPage === 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(1);
+                }}
+              >
+                Premiere page
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage <= 10 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage - 10);
+                }}
+              >
+                -10
+              </Button>
+
+              <Button
+                variant="secondary"
+                disabled={currentPage === 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage - 1);
+                }}
+              >
+                precedent
+              </Button>
+
+              <Button
+                variant="secondary"
+                disabled={currentPage === pages.length - 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage + 1);
+                }}
+              >
+                suivant
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage > pages.length - 11 ? true : false}
+                onClick={() => {
+                  setCurrentPage(currentPage + 10);
+                }}
+              >
+                +10
+              </Button>
+              <Button
+                variant="secondary"
+                disabled={currentPage === pages.length - 1 ? true : false}
+                onClick={() => {
+                  setCurrentPage(pages.length - 1);
+                }}
+              >
+                Derniere page
+              </Button>
+            </ButtonGroup>
+          </div>
+          <h6>
+            Page :{currentPage} sur {pages.length - 1}
+          </h6>
           <div className="display-cards">
             {dataComics.results.sort().map((comic, index) => {
               return <CardComics key={index} comic={comic} />;
             })}
           </div>
-        </div>
-      </section>
-      <section>
-        <div className="pagination wrapper">
-          {pages.map((page, index) => {
-            return (
-              <span
-                key={index}
-                style={{
-                  paddingTop: "5px",
-                  color: "white",
-                  backgroundColor: "red",
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                }}
-                onClick={() => {
-                  clickPage(page);
-                }}
-                value={page}
-              >
-                {page}
-              </span>
-            );
-          })}
-          <span style={{ color: "red" }}>Pages</span>
         </div>
       </section>
     </main>

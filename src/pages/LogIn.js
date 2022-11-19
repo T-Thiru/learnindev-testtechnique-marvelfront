@@ -27,7 +27,7 @@ const LogIn = ({
         password: password,
       };
       const resToken = await axios.post(
-        "http://localhost:3100/login",
+        "https://site--marvelback--56xblq4s6sr6.code.run/login",
         logIndetail
       );
       // console.log(resToken.data);

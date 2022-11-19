@@ -32,7 +32,7 @@ const SignUp = ({
         formData.append("picture", profilPic);
       }
       const resToken = await axios.post(
-        "http://localhost:3100/signup",
+        "https://site--marvelback--56xblq4s6sr6.code.run/signup",
         formData,
         {
           headers: {

@@ -1,12 +1,10 @@
 import React from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 const Favoris = ({ token, connectedUser }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
   // const { userFavoris } = location.state;
   const [favorisUser, setfavorisUser] = useState();
   const [isLoadingFavoris, setIsLoadingFavoris] = useState(true);
@@ -15,7 +13,7 @@ const Favoris = ({ token, connectedUser }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3100/user/${connectedUser}`
+          `https://site--marvelback--56xblq4s6sr6.code.run/user/${connectedUser}`
         );
         // console.log(response.data);
         setfavorisUser(response.data);
