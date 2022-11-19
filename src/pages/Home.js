@@ -98,7 +98,7 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
                 setrange(e.target.value);
               }}
             >
-              <option>Nombre d'affichage</option>
+              <option value={range}>Nombre d'affichage</option>
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
