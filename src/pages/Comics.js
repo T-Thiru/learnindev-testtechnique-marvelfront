@@ -58,7 +58,13 @@ const Comics = ({ setDataComics, dataComics }) => {
               }}
             />
           </div>
-          <div style={{ display: visible ? "none" : "" }}>
+          <div
+            style={{
+              position: "absolute",
+              zIndex: "100",
+              display: visible ? "none" : "",
+            }}
+          >
             {dataComics.results
               .filter((sujestedTitle) => {
                 return (

@@ -58,7 +58,13 @@ const Home = ({ setIsLoading, isLoading, setData, data }) => {
               }}
             />
           </div>
-          <div style={{ display: visible ? "none" : "" }}>
+          <div
+            style={{
+              position: "absolute",
+              zIndex: "100",
+              display: visible ? "none" : "",
+            }}
+          >
             {data.results
               .filter((sujestedName) => {
                 return (
