@@ -29,7 +29,7 @@ const Favoris = ({ token, connectedUser }) => {
   const handleDeleteCharacterFavoris = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3100/delete/character/favoris/`,
+        `https://site--marvelback--56xblq4s6sr6.code.run/delete/character/favoris/`,
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Favoris = ({ token, connectedUser }) => {
   const handleDeleteComicFavoris = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3100/delete/comic/favoris/`,
+        `https://site--marvelback--56xblq4s6sr6.code.run/delete/comic/favoris/`,
         {
           headers: {
             authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ const Favoris = ({ token, connectedUser }) => {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       setIsLoadingFavoris(true);
       setfavorisUser(response.data);
     } catch (error) {

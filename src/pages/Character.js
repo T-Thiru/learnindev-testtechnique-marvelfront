@@ -31,7 +31,7 @@ const Character = ({ token }) => {
   const handleFavorisCharacter = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3100/character/favoris/`,
+        `https://site--marvelback--56xblq4s6sr6.code.run/character/favoris/`,
         { id: id, character: dataCharacter },
         {
           headers: {

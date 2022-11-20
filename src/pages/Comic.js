@@ -15,7 +15,9 @@ const Comic = ({ token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3100/comic/${id}`);
+        const response = await axios.get(
+          `https://site--marvelback--56xblq4s6sr6.code.run/comic/${id}`
+        );
         // console.log(response.data);
         setDataComic(response.data);
         setIsLoadingComic(false);
