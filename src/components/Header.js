@@ -67,6 +67,9 @@ const Header = ({
         <Link to="/comics">
           <Button variant="outline-secondary">Comics</Button>
         </Link>
+        <Link to="/events">
+          <Button variant="outline-secondary">Events</Button>
+        </Link>
         <Link to="/favoris">
           <Button variant="outline-secondary">Favoris</Button>
         </Link>

@@ -11,6 +11,7 @@ import Character from "./pages/Character";
 import Comic from "./pages/Comic";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
+import Events from "./pages/Events";
 function App() {
   const [data, setData] = useState();
   const [dataComics, setDataComics] = useState();
@@ -48,6 +49,7 @@ function App() {
             <Comics setDataComics={setDataComics} dataComics={dataComics} />
           }
         />
+        <Route path="/events" element={<Events />} />
         <Route
           path="/favoris"
           element={
